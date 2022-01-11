@@ -1,25 +1,22 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { lazy, Suspense, useContext } from "react";
+import ModalContext from "./context/ModalContext";
+import Header from "./layout/Header";
 
-function App() {
+const App = () => {
+  const {
+    state: { module },
+  } = useContext(ModalContext);
+
+  const AvatarComponent = lazy(() => import(`./module/${module}`));
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      <h1>Bookkeeper!</h1>
+      <Header />
+      <Suspense fallback={<div> Loading...</div>}>
+        <AvatarComponent />
+      </Suspense>
+    </>
   );
-}
+};
 
 export default App;
